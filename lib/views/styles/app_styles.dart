@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ThemeColors {
   static const Color primaryColor = Color.fromARGB(255, 219, 168, 0);
+  static const Color primaryTwo = Color.fromARGB(255, 231, 207, 128);
   static const Color textColor = Colors.white;
   static const Color titleColor = Colors.black;
   static const Color alertColor = Colors.red;

@@ -7,6 +7,7 @@ import 'package:zoomio_driverapp/data/storage/img_storage.dart';
 import 'package:zoomio_driverapp/views/bottom_screens.dart';
 import 'package:zoomio_driverapp/views/custom_widgets/custom_button.dart';
 import 'package:zoomio_driverapp/views/custom_widgets/textformfields.dart';
+import 'package:zoomio_driverapp/views/profile_screens/secondprofile.dart';
 import 'package:zoomio_driverapp/views/styles/app_styles.dart';
 
 class ProfileCreationScreen extends StatefulWidget {
@@ -45,12 +46,10 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                     "Create Your Profile",
                     style: Textstyles.blackHead,
                   ),
-                  const SizedBox(
-                      height: 20), // Added spacing for visual separation
+                  const SizedBox(height: 20),
                   Center(
                     child: Stack(
                       children: [
-                        // The background container
                         Container(
                           decoration: BoxDecoration(
                             color: ThemeColors.primaryColor,
@@ -59,13 +58,11 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                           width: 120,
                           height: 120,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                30), // Apply the same border radius here
+                            borderRadius: BorderRadius.circular(30),
                             child: profileImg != null
                                 ? Image.network(
                                     profileImg!,
-                                    fit: BoxFit
-                                        .cover, // This will ensure the image covers the entire container
+                                    fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) {
                                       return const Icon(
                                         Icons.broken_image,
@@ -74,44 +71,28 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                                     },
                                   )
                                 : const Center(
-                                    // Center the icon when no image is selected
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.person, // Person icon
-                                          size: 80, // Adjust size as needed
-                                          color: Colors.white, // Icon color
-                                        ),
-                                        SizedBox(
-                                            height:
-                                                10), // Space between icon and text
-                                      ],
+                                    child: Icon(
+                                      Icons.person,
+                                      size: 80,
+                                      color: Colors.white,
                                     ),
                                   ),
                           ),
                         ),
-
-                        // The "Add Image" icon positioned at the top center
                         Positioned(
                           bottom: 0,
                           right: 0,
                           child: GestureDetector(
                             onTap: () {
-                              // Add your image picker logic here
-                              print("Add Image Icon Tapped");
                               profileImage(context);
                             },
                             child: Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                // color: const Color.fromARGB(255, 112, 90, 90),
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.1),
-                                    //spreadRadius: 2,
                                     blurRadius: 8,
                                     offset: const Offset(0, 3),
                                   ),
@@ -128,7 +109,7 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 20), // Added spacing between sections
+                  const SizedBox(height: 20),
                   SingleChildScrollView(
                     child: Container(
                       padding: const EdgeInsets.only(top: 28),
@@ -138,31 +119,26 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                       ),
                       child: Column(
                         children: [
-                          // Input fields for profile creation
                           SizedBox(
                             width: screenWidth * 0.78,
                             child: ProfileFields(
-                                controller: nameController,
-                                textStyle: const TextStyle(color: Colors.black),
-                                hintText: "Name",
-                                validator: (value) {
-                                  // Check if the field is empty
-                                  if (value == null || value.isEmpty) {
-                                    return "Please enter your name";
-                                  }
-
-                                  // Check if the name is too short (minimum 3 characters)
-                                  if (value.length <= 3) {
-                                    return "Name must be at least 3 characters long";
-                                  }
-
-                                  final nameRegex = RegExp(r'^[a-zA-Z\s]+$');
-                                  if (!nameRegex.hasMatch(value)) {
-                                    return "Name can only contain letters and spaces";
-                                  }
-
-                                  return null;
-                                }),
+                              controller: nameController,
+                              textStyle: const TextStyle(color: Colors.black),
+                              hintText: "Name",
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Please enter your name";
+                                }
+                                if (value.length <= 3) {
+                                  return "Name must be at least 3 characters long";
+                                }
+                                final nameRegex = RegExp(r'^[a-zA-Z\s]+$');
+                                if (!nameRegex.hasMatch(value)) {
+                                  return "Name can only contain letters and spaces";
+                                }
+                                return null;
+                              },
+                            ),
                           ),
                           const SizedBox(height: 10),
                           SizedBox(
@@ -173,26 +149,19 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                               hintText: "Age",
                               keyBoardType: TextInputType.number,
                               validator: (value) {
-                                // Check if the field is empty
                                 if (value == null || value.isEmpty) {
                                   return "Please enter your age";
                                 }
-
-                                // Ensure the value is numeric
                                 final age = int.tryParse(value);
                                 if (age == null) {
                                   return "Age must be a number";
                                 }
-
-                                // Ensure the value is between 10 and 65 (two-digit age only)
                                 if (age > 65) {
                                   return "Age greater than 65 is not allowed";
                                 }
-
                                 if (age < 19) {
                                   return "Age must be at least 19";
                                 }
-
                                 return null;
                               },
                               inputFormatters: [
@@ -209,25 +178,19 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                               textStyle: const TextStyle(color: Colors.black),
                               keyBoardType: TextInputType.number,
                               validator: (value) {
-                                // Check if the field is empty
                                 if (value == null || value.isEmpty) {
                                   return "Please enter your mobile number";
                                 }
-
-                                // Ensure the value contains only digits
                                 if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
                                   return "Please enter a valid mobile number";
                                 }
-
-                                // Ensure the number has exactly 10 digits
                                 if (value.length != 10) {
                                   return "Mobile number must be 10 digits long";
                                 }
-
                                 return null;
                               },
                               inputFormatters: [
-                                LengthLimitingTextInputFormatter(2),
+                                LengthLimitingTextInputFormatter(10),
                               ],
                             ),
                           ),
@@ -242,14 +205,16 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                                 return null;
                               },
                               decoration: const InputDecoration(
-                                  border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(19)),
-                              )),
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(19)),
+                                ),
+                              ),
                               value: selectedGender,
                               style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
                               hint: const Text(
                                 "Select Gender",
                                 style: TextStyle(color: Colors.black),
@@ -266,9 +231,7 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                               ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
-                                  child: Text(
-                                    value,
-                                  ),
+                                  child: Text(value),
                                 );
                               }).toList(),
                             ),
@@ -281,16 +244,19 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                                 if (value == null || value.isEmpty) {
                                   return "Please enter your vehicle preference";
                                 }
+                                return null;
                               },
                               decoration: const InputDecoration(
-                                  border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(19)),
-                              )),
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(19)),
+                                ),
+                              ),
                               value: selectedVehiclePreference,
                               style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
                               hint: const Text(
                                 "Select Vehicle Preference",
                                 style: TextStyle(color: Colors.black),
@@ -316,13 +282,13 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                           SizedBox(
                             width: screenWidth * 0.88,
                             child: Profilefields(
-                              controller: genderController,
-                              hintText: "Experience",
+                              controller: experienceController,
+                              hintText: "Experience (Years)",
                               textStyle: const TextStyle(color: Colors.black),
                               keyBoardType: TextInputType.number,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return "Please enter your experienced year";
+                                  return "Please enter your experienced years";
                                 }
                                 return null;
                               },
@@ -332,24 +298,25 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                             ),
                           ),
                           const SizedBox(height: 30),
-                          // CustomButtons(
-                          //   text: "Create Profile",
-                          //   onPressed: () {
-                          //     Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //             builder: (context) => BottomScreens()));
-                          //     // Submit profile creation logic
-                          //     print("Profile Created");
-                          //   },
-                          //   backgroundColor: ThemeColors.primaryColor,
-                          //   textColor: ThemeColors.textColor,
-                          //   screenWidth: screenWidth,
-                          //   screenHeight: screenHeight,
-                          // ),
                         ],
                       ),
                     ),
+                  ),
+                  const SizedBox(height: 20), // Spacing before the button
+                  CustomButtons(
+                    text: "Create Profile",
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProfileScreenTwo()));
+                      // Submit profile creation logic
+                      print("Profile Created");
+                    },
+                    backgroundColor: ThemeColors.primaryColor,
+                    textColor: ThemeColors.textColor,
+                    screenWidth: screenWidth,
+                    screenHeight: screenHeight,
                   ),
                 ],
               ),
