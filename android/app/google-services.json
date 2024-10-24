@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "689551262599",
+    "project_id": "zoomiodriverapp-31bc1",
+    "storage_bucket": "zoomiodriverapp-31bc1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689551262599:android:3853e8278e63fa5a928922",
+        "android_client_info": {
+          "package_name": "com.example.zoomio_driverapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8BiSL2JbrgK0vfl3mhJaQmtbGmznSugU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

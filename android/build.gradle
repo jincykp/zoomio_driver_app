@@ -1,0 +1,31 @@
+// android/build.gradle
+buildscript {
+    repositories {
+        google()            // This repository is used for Google services
+        mavenCentral()     // Central repository for other libraries
+    }
+
+    dependencies {
+        // Add the Google services classpath here
+        classpath 'com.google.gms:google-services:4.3.15'  // Ensure to add this line
+    }
+}
+
+allprojects {
+    repositories {
+        google()            // Repository for Google services
+        mavenCentral()     // Central repository for other libraries
+    }
+}
+
+rootProject.buildDir = "../build" // Custom build directory path
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}" // Define build directory for each subproject
+}
+subprojects {
+    project.evaluationDependsOn(":app") // Ensures the app module is evaluated first
+}
+
+tasks.register("clean", Delete) { // Custom task to clean the build directory
+    delete rootProject.buildDir
+}
