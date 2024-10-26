@@ -80,16 +80,16 @@ class ProfileFields extends StatelessWidget {
       keyboardType: keyBoardType,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: controller,
-      style: const TextStyle(color: Colors.black),
+      // style: const TextStyle(color: Colors.black),
       decoration: InputDecoration(
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(19)),
-          borderSide: BorderSide(color: Colors.black),
+         // borderSide: BorderSide(color: Colors.black),
         ),
         enabledBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(19)),
-          borderSide:
-              BorderSide(color: Colors.black), // Border color when enabled
+          // borderSide:
+          //     BorderSide(color: Colors.black), // Border color when enabled
         ),
         focusedBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(19)),
@@ -97,8 +97,8 @@ class ProfileFields extends StatelessWidget {
               BorderSide(color: Colors.black), // Border color when focused
         ),
         hintText: hintText,
-        hintStyle: const TextStyle(color: Colors.black), // Hint text color
-        labelStyle: const TextStyle(color: Colors.black),
+        //  hintStyle: const TextStyle(color: Colors.black), // Hint text color
+        // labelStyle: const TextStyle(color: Colors.black),
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
       ),

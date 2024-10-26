@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:zoomio_driverapp/data/storage/img_storage.dart';
+import 'package:zoomio_driverapp/views/custom_widgets/custom_button.dart';
 import 'package:zoomio_driverapp/views/custom_widgets/textformfields.dart';
 import 'package:zoomio_driverapp/views/styles/app_styles.dart';
 
@@ -23,153 +24,334 @@ class _ProfileScreenTwoState extends State<ProfileScreenTwo> {
   String? selectedGender;
   String? selectedVehiclePreference;
   String? profileImg;
+  String? licenseImg;
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        title: const Center(
+          child: Text(
+            "Create Your Profile",
+            style: Textstyles.blackHead,
+          ),
+        ),
         backgroundColor: ThemeColors.primaryColor,
       ),
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            height: 160,
-            decoration: const BoxDecoration(
-                color: ThemeColors.primaryColor,
-                borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(50),
-                    bottomLeft: Radius.circular(50))),
-            child: Row(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: ThemeColors.primaryColor,
-                        borderRadius: BorderRadius.circular(
-                            50), // Adjusted to match CircleAvatar
-                      ),
-                      width: 100, // Adjusted size to fit the avatar radius
-                      height: 100,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(
-                            50), // Circular shape for the image
-                        child: profileImg != null
-                            ? Image.network(
-                                profileImg!,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return const Icon(
-                                    Icons.broken_image,
-                                    color: Colors.white,
-                                  );
-                                },
-                              )
-                            : const Center(
-                                child: Icon(
-                                  Icons.person,
-                                  size: 80,
-                                  color: Colors.white,
-                                ),
-                              ),
-                      ),
-                    ),
-                    // Positioned widget for camera icon
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: GestureDetector(
-                        onTap: () {
-                          profileImage(context); // Method to select image
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.black.withOpacity(0.5),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 8,
-                                offset: const Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: const Icon(
-                            Icons.add_a_photo,
-                            size: 25,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Expanded(
-                  child: Column(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              height: 180,
+              decoration: const BoxDecoration(
+                  color: ThemeColors.primaryColor,
+                  borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(50),
+                      bottomLeft: Radius.circular(50))),
+              child: Row(
+                children: [
+                  Stack(
                     children: [
-                      SizedBox(
-                        width: screenWidth * 0.6,
-                        child: ProfileFields(
-                          controller: nameController,
-                          textStyle: const TextStyle(color: Colors.black),
-                          hintText: "Name",
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please enter your name";
-                            }
-                            if (value.length <= 3) {
-                              return "Name must be at least 3 characters long";
-                            }
-                            final nameRegex = RegExp(r'^[a-zA-Z\s]+$');
-                            if (!nameRegex.hasMatch(value)) {
-                              return "Name can only contain letters and spaces";
-                            }
-                            return null;
+                      CircleAvatar(
+                        maxRadius: 50,
+                        minRadius: 50,
+                        backgroundImage: profileImg != null
+                            ? NetworkImage(profileImg!)
+                            : const AssetImage("assets/download.png")
+                                as ImageProvider, // Default image or loaded image
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            profileImage(context); // Method to select image
                           },
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.black.withOpacity(0.5),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: const Icon(
+                              Icons.add_a_photo,
+                              size: 25,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        width: screenWidth * 0.6,
-                        child: Profilefields(
-                          controller: ageController,
-                          textStyle: const TextStyle(color: Colors.black),
-                          hintText: "Age",
-                          keyBoardType: TextInputType.number,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please enter your age";
-                            }
-                            final age = int.tryParse(value);
-                            if (age == null) {
-                              return "Age must be a number";
-                            }
-                            if (age > 65) {
-                              return "Age greater than 65 is not allowed";
-                            }
-                            if (age < 19) {
-                              return "Age must be at least 19";
-                            }
-                            return null;
-                          },
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(2),
-                          ],
-                        ),
-                      )
                     ],
                   ),
-                )
-              ],
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: screenWidth * 0.6,
+                          child: ProfileFields(
+                            controller: nameController,
+                            //  textStyle: const TextStyle(color: Colors.black),
+                            hintText: "Name",
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter your name";
+                              }
+                              if (value.length <= 3) {
+                                return "Name must be at least 3 characters long";
+                              }
+                              final nameRegex = RegExp(r'^[a-zA-Z\s]+$');
+                              if (!nameRegex.hasMatch(value)) {
+                                return "Name can only contain letters and spaces";
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          width: screenWidth * 0.6,
+                          child: ProfileFields(
+                            controller: ageController,
+                            // textStyle: const TextStyle(color: Colors.black),
+                            hintText: "Age",
+                            keyBoardType: TextInputType.number,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter your age";
+                              }
+                              final age = int.tryParse(value);
+                              if (age == null) {
+                                return "Age must be a number";
+                              }
+                              if (age > 65) {
+                                return "Age greater than 65 is not allowed";
+                              }
+                              if (age < 19) {
+                                return "Age must be at least 19";
+                              }
+                              return null;
+                            },
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(2),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
-          )
-        ],
+            const SizedBox(height: 15),
+            SizedBox(
+              width: screenWidth * 0.88,
+              child: Profilefields(
+                controller: contactController,
+                hintText: "Contact Number",
+                //  textStyle: const TextStyle(color: Colors.black),
+                keyBoardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your mobile number";
+                  }
+                  if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                    return "Please enter a valid mobile number";
+                  }
+                  if (value.length != 10) {
+                    return "Mobile number must be 10 digits long";
+                  }
+                  return null;
+                },
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(10),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              width: screenWidth * 0.88,
+              child: DropdownButtonFormField<String>(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your gender";
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(19)),
+                  ),
+                ),
+                value: selectedGender,
+                style: const TextStyle(
+                  //  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+                hint: const Text(
+                  "Select Gender",
+                  // style: TextStyle(color: Colors.black),
+                ),
+                onChanged: (newValue) {
+                  setState(() {
+                    selectedGender = newValue;
+                  });
+                },
+                items: ["Male", "Female", "Other"]
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              width: screenWidth * 0.88,
+              child: DropdownButtonFormField<String>(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your vehicle preference";
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(19)),
+                  ),
+                ),
+                value: selectedVehiclePreference,
+                style: const TextStyle(
+                  //  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+                hint: const Text(
+                  "Select Vehicle Preference",
+                  //  style: TextStyle(color: Colors.black),
+                ),
+                onChanged: (newValue) {
+                  setState(() {
+                    selectedVehiclePreference = newValue;
+                  });
+                },
+                items: ["Bike", "Car", "Both"]
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              width: screenWidth * 0.88,
+              child: Profilefields(
+                controller: experienceController,
+                hintText: "Experience (Years)",
+                //  textStyle: const TextStyle(color: Colors.black),
+                keyBoardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your experienced years";
+                  }
+                  return null;
+                },
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(2),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            SizedBox(
+              width: screenWidth * 0.9,
+              child: CustomButtons(
+                  text: "Submit",
+                  onPressed: () {},
+                  backgroundColor: ThemeColors.primaryColor,
+                  textColor: ThemeColors.textColor,
+                  screenWidth: screenWidth,
+                  screenHeight: screenHeight),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            SizedBox(
+              width: screenWidth * 0.9,
+              child: TextButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(30)),
+                    ),
+                    builder: (context) {
+                      return Container(
+                        height: 400,
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(screenWidth * 0.09),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: screenWidth *
+                                        0.8, // Use 0.8 for 80% width
+                                    height: 250,
+                                    decoration: BoxDecoration(
+                                      color: Colors
+                                          .amberAccent, // Set the color inside the decoration
+                                      image: licenseImg != null
+                                          ? DecorationImage(
+                                              image: NetworkImage(
+                                                  licenseImg!), // Use NetworkImage if licenseImg is not null
+                                              fit: BoxFit
+                                                  .cover, // Adjust the fit as needed
+                                            )
+                                          : null, // No decoration image if licenseImg is null
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      licenseImage(context);
+                                    },
+                                    icon:
+                                        const Icon(Icons.add_a_photo_outlined),
+                                  ),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("Submit"))
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: Text("Click to add your license"),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -183,6 +365,20 @@ class _ProfileScreenTwoState extends State<ProfileScreenTwo> {
           .uploadProfileImg(pickedImage.path, context);
       setState(() {
         profileImg = res;
+      });
+    }
+  }
+
+  Future<void> licenseImage(BuildContext context) async {
+    final imagePicker = ImagePicker();
+    final pickedImage =
+        await imagePicker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      String? res = await ImageStorageService()
+          .uploadLicenseImg(pickedImage.path, context);
+      setState(() {
+        licenseImg = res;
+        print("Selected Image URL: $licenseImg");
       });
     }
   }
