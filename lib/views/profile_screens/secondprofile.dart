@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:zoomio_driverapp/data/model/profile_model.dart';
 import 'package:zoomio_driverapp/data/storage/img_storage.dart';
+import 'package:zoomio_driverapp/views/bloc/profile/bloc/profile_bloc.dart';
+import 'package:zoomio_driverapp/views/bottom_screens.dart';
 import 'package:zoomio_driverapp/views/custom_widgets/custom_button.dart';
 import 'package:zoomio_driverapp/views/custom_widgets/textformfields.dart';
+import 'package:zoomio_driverapp/views/homepage_screens/home.dart';
 import 'package:zoomio_driverapp/views/styles/app_styles.dart';
 
 class ProfileScreenTwo extends StatefulWidget {
@@ -51,16 +56,25 @@ class _ProfileScreenTwoState extends State<ProfileScreenTwo> {
                       bottomRight: Radius.circular(50),
                       bottomLeft: Radius.circular(50))),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Stack(
                     children: [
                       CircleAvatar(
+                        backgroundColor: ThemeColors.textColor,
                         maxRadius: 50,
                         minRadius: 50,
                         backgroundImage: profileImg != null
                             ? NetworkImage(profileImg!)
-                            : const AssetImage("assets/download.png")
-                                as ImageProvider, // Default image or loaded image
+                            : null,
+                        child: profileImg ==
+                                null // Show icon when there is no image
+                            ? const Icon(
+                                Icons.person,
+                                size: 50,
+                                color: ThemeColors.titleColor,
+                              )
+                            : null,
                       ),
                       Positioned(
                         bottom: 0,
@@ -281,7 +295,28 @@ class _ProfileScreenTwoState extends State<ProfileScreenTwo> {
               width: screenWidth * 0.9,
               child: CustomButtons(
                   text: "Submit",
-                  onPressed: () {},
+                  onPressed: () {
+                    // if (formKey.currentState!.validate()) {
+                    //   final profile = ProfileModel(
+                    //     name: nameController.text,
+                    //     age: int.tryParse(ageController.text) ?? 0,
+                    //     contactNumber: contactController.text,
+                    //     gender: selectedGender,
+                    //     vehiclePreference: selectedVehiclePreference,
+                    //     experienceYears:
+                    //         int.tryParse(experienceController.text) ?? 0,
+                    //     profileImageUrl: profileImg,
+                    //     licenseImageUrl: licenseImg,
+                    //   );
+
+                    // Dispatch the event to save profile
+                    // context.read<ProfileBloc>().add(SaveProfile(profile));
+                    // }
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => BottomScreens()));
+                  },
                   backgroundColor: ThemeColors.primaryColor,
                   textColor: ThemeColors.textColor,
                   screenWidth: screenWidth,
@@ -314,8 +349,8 @@ class _ProfileScreenTwoState extends State<ProfileScreenTwo> {
                                         0.8, // Use 0.8 for 80% width
                                     height: 250,
                                     decoration: BoxDecoration(
-                                      color: Colors
-                                          .amberAccent, // Set the color inside the decoration
+                                      // color: Colors
+                                      // .amberAccent, // Set the color inside the decoration
                                       image: licenseImg != null
                                           ? DecorationImage(
                                               image: NetworkImage(
@@ -330,8 +365,8 @@ class _ProfileScreenTwoState extends State<ProfileScreenTwo> {
                                     onPressed: () {
                                       licenseImage(context);
                                     },
-                                    icon:
-                                        const Icon(Icons.add_a_photo_outlined),
+                                    icon: const Icon(Icons.add_a_photo_outlined,
+                                        size: 30),
                                   ),
                                   ElevatedButton(
                                       onPressed: () {
@@ -373,13 +408,32 @@ class _ProfileScreenTwoState extends State<ProfileScreenTwo> {
     final imagePicker = ImagePicker();
     final pickedImage =
         await imagePicker.pickImage(source: ImageSource.gallery);
+
     if (pickedImage != null) {
-      String? res = await ImageStorageService()
+      String? resf = await ImageStorageService()
           .uploadLicenseImg(pickedImage.path, context);
+
+      // Force refresh by appending a random query parameter
       setState(() {
-        licenseImg = res;
+        licenseImg = resf != null
+            ? "$resf?timestamp=${DateTime.now().millisecondsSinceEpoch}"
+            : null;
         print("Selected Image URL: $licenseImg");
       });
     }
   }
+
+  // createProfile() {
+  //   if (formKey.currentState!.validate()) {
+  //     ProfileModel profileModel = ProfileModel(
+  //         name: nameController.text,
+  //         age: int.tryParse(ageController.text) ?? 0,
+  //         contactNumber: contactController.text,
+  //         gender: selectedGender,
+  //         vehiclePreference: selectedVehiclePreference,
+  //         experienceYears: int.tryParse(experienceController.text) ?? 0,
+  //         profileImageUrl: profileImg,
+  //         licenseImageUrl: licenseImg);
+  //   }
+  // }
 }

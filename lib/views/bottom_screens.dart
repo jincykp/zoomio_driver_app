@@ -36,47 +36,6 @@ class _BottomScreensState extends State<BottomScreens> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () async {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text(
-                      "Logout Confirmation",
-                      //   style: Textstyles.buttonText,
-                    ),
-                    content: const Text("Are you sure you want to logout?"),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text("Cancel"),
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          Navigator.of(context).pop();
-                          await auth.signout();
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SignInScreen()),
-                          );
-                        },
-                        child: const Text("Logout"),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-            icon: const Icon(Icons.logout),
-          ),
-        ],
-      ),
       body: _screens[_selectedIndex], // Display the selected screen
       bottomNavigationBar: Container(
         color: ThemeColors.primaryColor,
