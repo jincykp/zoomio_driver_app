@@ -6,6 +6,7 @@ class ThemeColors {
   static const Color textColor = Colors.white;
   static const Color titleColor = Colors.black;
   static const Color alertColor = Colors.red;
+  static const Color successColor = Colors.green;
 }
 
 class Textstyles {

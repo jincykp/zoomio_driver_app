@@ -5,15 +5,17 @@ class ProfileRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Save a profile to Firestore
-  Future<void> saveProfile(ProfileModel profile) async {
+  Future<void> saveProfileData(ProfileModel profile) async {
     try {
-      // Use 'set' instead of 'add' to ensure the ID is set and avoids duplicates
-      await _firestore
-          .collection('profiles')
-          .doc(profile.id)
-          .set(profile.toMap());
+      // Get a reference to Firestore
+      final firestore = FirebaseFirestore.instance;
+
+      // Save the profile data to a 'profiles' collection
+      await firestore.collection('profiles').add(profile.toMap());
+
+      print("Profile saved successfully!");
     } catch (e) {
-      throw Exception("Failed to save profile: $e");
+      print("Failed to save profile: $e");
     }
   }
 

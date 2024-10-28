@@ -1,26 +1,36 @@
 {
   "project_info": {
-    "project_number": "689551262599",
-    "project_id": "zoomiodriverapp-31bc1",
-    "storage_bucket": "zoomiodriverapp-31bc1.appspot.com"
+    "project_number": "634420019339",
+    "project_id": "zoomiodriverapp-6b259",
+    "storage_bucket": "zoomiodriverapp-6b259.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:689551262599:android:3853e8278e63fa5a928922",
+        "mobilesdk_app_id": "1:634420019339:android:4acbc7cac52ef2bef3d48e",
         "android_client_info": {
           "package_name": "com.example.zoomio_driverapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "634420019339-lcsg5pnplk05kjra6bmchbham7qn5f85.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyC8BiSL2JbrgK0vfl3mhJaQmtbGmznSugU"
+          "current_key": "AIzaSyA--kNdnrVEhsewANx47BKcjUUuI3nJCXg"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "634420019339-lcsg5pnplk05kjra6bmchbham7qn5f85.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

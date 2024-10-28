@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:zoomio_driverapp/data/services/auth_services.dart';
@@ -6,6 +7,7 @@ import 'package:zoomio_driverapp/views/custom_widgets/custom_button.dart';
 import 'package:zoomio_driverapp/views/custom_widgets/password_buttons.dart';
 import 'package:zoomio_driverapp/views/custom_widgets/textformfields.dart';
 import 'package:zoomio_driverapp/views/profile_screens/profile_creation_screen.dart';
+import 'package:zoomio_driverapp/views/profile_screens/secondprofile.dart';
 import 'package:zoomio_driverapp/views/styles/app_styles.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -127,13 +129,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 // Sign Up button
                 CustomButtons(
                   text: "Sign up",
-                  onPressed: () {
+                  onPressed: () async {
+                    // Check if form is valid and the Terms of Service checkbox is checked
                     if (formKey.currentState!.validate() && isChecked == true) {
-                      Navigator.push(
+                      // Call the function to create an account using the auth instance
+                      User? user = await auth.createAccountWithEmail(
+                        emailController.text.trim(),
+                        passWordController.text.trim(),
+                      );
+
+                      if (user != null) {
+                        // Navigate to Profile Creation Screen after successful signup
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ProfileCreationScreen()));
+                            builder: (context) => const ProfileScreenTwo(),
+                          ),
+                        );
+                      } else {
+                        // Show error message if account creation failed
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Failed to create account. Please try again.',
+                              style: Textstyles.smallTexts,
+                            ),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
                     } else {
+                      // Show message if Terms of Service not accepted
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
@@ -144,12 +170,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       );
                     }
-                    // showDialog(
-                    //   context: context,
-                    //   barrierDismissible: false,
-                    //   builder: (context) =>
-                    //       const Center(child: CircularProgressIndicator()),
-                    // );
                   },
                   backgroundColor: ThemeColors.primaryColor,
                   textColor: ThemeColors.textColor,

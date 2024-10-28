@@ -1,5 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zoomio_driverapp/data/services/auth_services.dart';
+import 'package:zoomio_driverapp/views/auth_screens/signin_screen.dart';
+import 'package:zoomio_driverapp/views/bloc/themestate/thememode.dart';
 import 'package:zoomio_driverapp/views/custom_widgets/cutom_profile_container.dart';
 import 'package:zoomio_driverapp/views/styles/app_styles.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,11 +12,18 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AuthServices auth = AuthServices();
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.sunny))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                context.read<ThemeCubit>().toggleTheme();
+              },
+              icon: const Icon(Icons.sunny))
+        ],
         //backgroundColor: ThemeColors.primaryColor,
       ),
       body: Center(
@@ -102,7 +112,46 @@ class ProfileScreen extends StatelessWidget {
                 height: 10,
               ),
               CustomListTileCard(
-                  leadingIcon: Icons.logout, title: "Log Out", onTap: () {}),
+                  leadingIcon: Icons.logout,
+                  title: "Log Out",
+                  onTap: () async {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text(
+                              "Logout Confirmation",
+                              style: GoogleFonts.alikeAngular(
+                                  fontWeight: FontWeight.bold),
+                              //   style: Textstyles.buttonText,
+                            ),
+                            content: const Text(
+                              "Are you sure you want to logout?",
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text("Cancel"),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  Navigator.of(context).pop();
+                                  await auth.signout();
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SignInScreen()),
+                                  );
+                                },
+                                child: const Text("Logout"),
+                              ),
+                            ],
+                          );
+                        });
+                  })
             ],
           ),
         ),

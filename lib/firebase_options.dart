@@ -50,21 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCCufD6NIxFDFgdtFv5Mp0ZzwZfKr3Nn6k',
-    appId: '1:689551262599:web:e7a23e23cecd54b5928922',
-    messagingSenderId: '689551262599',
-    projectId: 'zoomiodriverapp-31bc1',
-    authDomain: 'zoomiodriverapp-31bc1.firebaseapp.com',
-    storageBucket: 'zoomiodriverapp-31bc1.appspot.com',
-    measurementId: 'G-JV2M0C8DJQ',
+    apiKey: 'AIzaSyBgizWzojFC8rl2V1DyZ3x5QdSPoMFVL70',
+    appId: '1:634420019339:web:1ef3a1460570c0c2f3d48e',
+    messagingSenderId: '634420019339',
+    projectId: 'zoomiodriverapp-6b259',
+    authDomain: 'zoomiodriverapp-6b259.firebaseapp.com',
+    storageBucket: 'zoomiodriverapp-6b259.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC8BiSL2JbrgK0vfl3mhJaQmtbGmznSugU',
-    appId: '1:689551262599:android:3853e8278e63fa5a928922',
-    messagingSenderId: '689551262599',
-    projectId: 'zoomiodriverapp-31bc1',
-    storageBucket: 'zoomiodriverapp-31bc1.appspot.com',
+    apiKey: 'AIzaSyA--kNdnrVEhsewANx47BKcjUUuI3nJCXg',
+    appId: '1:634420019339:android:4acbc7cac52ef2bef3d48e',
+    messagingSenderId: '634420019339',
+    projectId: 'zoomiodriverapp-6b259',
+    storageBucket: 'zoomiodriverapp-6b259.appspot.com',
   );
 
 }

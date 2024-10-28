@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:zoomio_driverapp/views/profile_screens/profile_creation_screen.dart';
+import 'package:zoomio_driverapp/views/profile_screens/secondprofile.dart';
 
 class AuthServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -63,27 +63,32 @@ class AuthServices {
         final GoogleSignInAuthentication googleAuth =
             await googleUser.authentication;
 
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
+        // Ensure the accessToken and idToken are available
+        if (googleAuth.accessToken != null && googleAuth.idToken != null) {
+          final AuthCredential credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
 
-        // Sign in to Firebase with the Google credentials
-        await auth.signInWithCredential(credential);
+          // Sign in to Firebase with the Google credentials
+          await auth.signInWithCredential(credential);
 
-        // Get user details
-        String email = googleUser.email;
-        String? displayName = googleUser.displayName; // Get the user's name
+          // Get user details
+          String email = googleUser.email;
+          String? displayName = googleUser.displayName;
 
-        // Navigate to HomePage and pass the email and displayName
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ProfileCreationScreen(
-                // Pass display name if available
-                ),
-          ),
-        );
+          // Navigate to ProfileScreenTwo and pass the displayName if available
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProfileScreenTwo(
+                  // Pass user details if needed
+                  ),
+            ),
+          );
+        } else {
+          log("Failed to retrieve access token or ID token.");
+        }
       }
     } catch (e) {
       log("Google Sign-In failed: $e");
